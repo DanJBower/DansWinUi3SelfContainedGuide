@@ -39,7 +39,7 @@ The simple demo exe can be downloaded from the releases page. It can be run with
 
 3) From the same website, download `C# Visual Studio 2022 extension` for the preview
 
-4) Install this specific version of the [C++ redistributable]((https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170))
+4) Install this specific version of the [C++ redistributable](https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)
 
 ### Creating The Project
 
