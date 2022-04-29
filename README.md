@@ -8,6 +8,10 @@ Therefore, the project can be built into an exe, but it can't be shared as self 
 
 Nevermind, another blocking issue. Raised issue. [So close yet so far msbuild#7587](<https://github.com/dotnet/msbuild/issues/7587>)
 
+## Another shocking thing
+
+There is currently no XAML Designer... [microsoft-ui-xaml#5917](https://github.com/microsoft/microsoft-ui-xaml/issues/5917)
+
 ## About
 
 This repository contains:
