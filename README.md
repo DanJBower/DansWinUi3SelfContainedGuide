@@ -1,4 +1,4 @@
-# Dan's WinUI 3 Self Contained .exe Guide
+# Dan's WinUI 3 Self-Contained .exe Guide
 
 ## About
 
@@ -53,6 +53,12 @@ The simple demo exe can be downloaded from the releases page. It can be run with
 
 3) If storing in git, run `dotnet new gitignore` in command prompt in the folder created.
 
-4)
+4) Add `<WindowsPackageType>None</WindowsPackageType>` to the end of the newly created .csproj's main `PropertyGroup`. See `.\DansWinUi3SelfContainedDemo\DansWinUi3SelfContainedDemo\DansWinUi3SelfContainedDemo.csproj` if unsure
+
+5) Change the debug dropdown at the top of Visual Studio from `YouProjectName (Packaged)` to `YouProjectName (Unpackaged)`
+
+*At this point it will build a non-self-contained exe. The next steps are to make it contained when you run `dotnet publish`*
+
+6)
 
 ### Making The exe
