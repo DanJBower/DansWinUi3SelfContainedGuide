@@ -4,7 +4,7 @@
 
 This guide should work in the future. However, there is currently a blocking issue [msbuild#7452](https://github.com/dotnet/msbuild/issues/7452) that needs to be resolved before the `dotnet` cli commands can work.
 
-Therefore, the project can be built into an exe, but it can't be shared as self contained
+Therefore, the project can be built into an exe, but it can't be shared as self contained. However, I just discovered a work around. See the end.
 
 ## About
 
@@ -83,4 +83,22 @@ To make the exe, simply run the `dotnet publish` command with the following argu
 
     dotnet publish /p:DebugType=None /p:DebugSymbols=false /p:PublishReadyToRun=true /p:PublishSingleFile=true /p:PublishReadyToRunShowWarnings=true /p:PublishTrimmed=false /p:IncludeNativeLibrariesForSelfExtract=true "YourProject.csproj" -o "." -c release
 
-See `MakeDemo.bat` for an example of the command used for this project.
+See `DotnetMakeDemo.bat` for an example of the command used for this project.
+
+## Publishing exe workaround till Microsoft fix `dotnet`
+
+1) Add the code below to the end of the newly created .csproj's main `PropertyGroup`. See `.\DansWinUi3SelfContainedDemo\DansWinUi3SelfContainedDemo\DansWinUi3SelfContainedDemo.csproj` if unsure
+
+        <DebugType Condition="'$(Configuration)' == 'Release'">None</DebugType>
+        <DebugSymbols Condition="'$(Configuration)' == 'Release'">false</DebugSymbols>
+        <PublishReadyToRunShowWarnings Condition="'$(Configuration)' == 'Release'">true</PublishReadyToRunShowWarnings>
+
+2) Add `msbuild` to your path. I found mine in `C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Current\Bin`
+
+3) Modify your publish command to look like:
+
+        msbuild YourProject.csproj -t:restore /t:Build;Publish /p:Configuration=Release /p:Platform=x64 /p:PublishProfile=x64Profile /p:OutputPath=.\Published
+
+See `MsbuildMakeDemo.bat` for an example of the command used for this project.
+
+*Note: When running, be prepared for a metric ton of output in the console*

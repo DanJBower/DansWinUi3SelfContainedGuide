@@ -22,6 +22,11 @@
 		<PublishTrimmed>false</PublishTrimmed>
 		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 
+		<!-- Workaround -->
+		<DebugType Condition="'$(Configuration)' == 'Release'">None</DebugType>
+		<DebugSymbols Condition="'$(Configuration)' == 'Release'">false</DebugSymbols>
+		<PublishReadyToRunShowWarnings Condition="'$(Configuration)' == 'Release'">true</PublishReadyToRunShowWarnings>
+
 		<!-- Versioning handled in the pipeline -->
 		<AssemblyVersion Condition=" '$(pipelineAssemblyVersion)' != '' ">$(pipelineAssemblyVersion)</AssemblyVersion>
 		<FileVersion Condition=" '$(pipelineAssemblyVersion)' != '' ">$(pipelineAssemblyVersion)</FileVersion>
@@ -52,18 +57,18 @@
 	</ItemGroup>
 
 	<!--
-    Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
-    Tools extension to be activated for this project even if the Windows App SDK Nuget
-    package has not yet been restored.
+	Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
+	Tools extension to be activated for this project even if the Windows App SDK Nuget
+	package has not yet been restored.
   -->
 	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
 		<ProjectCapability Include="Msix" />
 	</ItemGroup>
 
 	<!--
-    Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution
-    Explorer "Package and Publish" context menu entry to be enabled for this project even if
-    the Windows App SDK Nuget package has not yet been restored.
+	Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution
+	Explorer "Package and Publish" context menu entry to be enabled for this project even if
+	the Windows App SDK Nuget package has not yet been restored.
   -->
 	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
 		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
