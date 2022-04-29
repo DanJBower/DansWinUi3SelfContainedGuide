@@ -4,7 +4,9 @@
 
 This guide should work in the future. However, there is currently a blocking issue [msbuild#7452](https://github.com/dotnet/msbuild/issues/7452) that needs to be resolved before the `dotnet` cli commands can work.
 
-Therefore, the project can be built into an exe, but it can't be shared as self contained. However, I just discovered a work around. See the end.
+Therefore, the project can be built into an exe, but it can't be shared as self contained. The project also can't currently be run in VS Code. However, I just discovered a work around for the exe. See the end.
+
+Nevermind, another blocking issue. Raised issue. [So close yet so far msbuild#7587](<https://github.com/dotnet/msbuild/issues/7587>)
 
 ## About
 
