@@ -8,6 +8,7 @@ This repository contains:
   * This means that it does not have to be installed, it can just be run
 * Example workflows for when the main branch is updated and when a release is made
 * A simple MVVM & DI / IOC Example
+* The .vscode files required to debug / publish the exe. You will still need Visual Studio installed though unless you want to work out all the files needed. I didn't fancy that
 
 ## Demo
 
@@ -19,7 +20,9 @@ The simple demo exe can be downloaded from the releases page. It can be run with
 
 *Note: Eventually this will come to the built in versions for visual studio. I will update the guide around when that happens*
 
-1) Setup Visual Studio. Open Visual Studio Installer and select:
+*Note: Visual Studio 2022 Preview is required so you have .NET 6.0.300 installed. The build / publish command won't run without it. Ironically you don't actually need to use the preivew version, you just need it installed*
+
+1) Setup Visual Studio 2022 Preview. When installing, select:
 
     * Main Page
 
@@ -59,6 +62,19 @@ The simple demo exe can be downloaded from the releases page. It can be run with
 
 *At this point it will build a non-self-contained exe. The next steps are to make it contained when you run `dotnet publish`*
 
-6)
+6) Add the code below to the end of the newly created .csproj's main `PropertyGroup`. See `.\DansWinUi3SelfContainedDemo\DansWinUi3SelfContainedDemo\DansWinUi3SelfContainedDemo.csproj` if unsure
+
+        <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
+        <SelfContained>true</SelfContained>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <PublishTrimmed>false</PublishTrimmed>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 
 ### Making The exe
+
+To make the exe, simply run the `dotnet publish` command with the following arguments. Make sure to replace `YourProject.csproj` with a path to you project.
+
+    dotnet publish /p:DebugType=None /p:DebugSymbols=false /p:PublishReadyToRun=true /p:PublishSingleFile=true /p:PublishReadyToRunShowWarnings=true /p:PublishTrimmed=false /p:IncludeNativeLibrariesForSelfExtract=true "YourProject.csproj" -o "." -c release
+
+See `MakeDemo.bat` for an example of the command used for this project.
