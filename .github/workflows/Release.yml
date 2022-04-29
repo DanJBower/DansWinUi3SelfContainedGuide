@@ -1,0 +1,128 @@
+name: Release Dan's WPF Components
+
+on:
+  #release:
+  #  types: [published]
+
+jobs:
+  BuildNuGet:
+    name: Build NuGet
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Get Latest Release
+      id: latest_release
+      uses: joutvhu/get-release@v1.0.1
+      with:
+        latest: true
+        prerelease: true
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Generate Version
+      id: make_version
+      shell: pwsh
+      run: .github\utility\SetPassedVersionNumber.ps1 -latest '${{ steps.latest_release.outputs.tag_name }}'
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Build
+      run: dotnet build --configuration Release DansWpfComponents\DansWpfComponents\DansWpfComponents.csproj
+      env:
+        pipelinePackageVersion: ${{ steps.make_version.outputs.pipelinePackageVersion }}
+        pipelineAssemblyVersion: ${{ steps.make_version.outputs.pipelineAssemblyVersion }}
+
+    - name: Upload NuGet artifact
+      uses: actions/upload-artifact@v3.0.0
+      with:
+        name: NuGet Package Files
+        path: |
+          DansWpfComponents\DansWpfComponents\bin\Release\DansWpfComponents.*.nupkg
+          DansWpfComponents\DansWpfComponents\bin\Release\DansWpfComponents.*.snupkg
+        if-no-files-found: error
+
+  ReleaseNuGetToPrivateFeed:
+    name: Release NuGet To Private Feed
+    needs: BuildNuGet
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download NuGet artifact
+      uses: actions/download-artifact@v3.0.0
+      with:
+        name: NuGet Package Files
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Release NuGet
+      run: dotnet nuget push *.nupkg --source https://nuget.pkg.github.com/DanJBower/index.json --api-key ${{ github.token }}
+
+  ReleaseNuGetToActualFeed:
+    name: Release NuGet To Actual Feed
+    needs: BuildNuGet
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download NuGet artifact
+      uses: actions/download-artifact@v3.0.0
+      with:
+        name: NuGet Package Files
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Release NuGet
+      run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+
+  PublishExe:
+    name: Publish Demo Executable
+    needs: BuildNuGet
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Get Latest Release
+      id: latest_release
+      uses: joutvhu/get-release@v1.0.1
+      with:
+        latest: true
+        prerelease: true
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Generate Version
+      id: make_version
+      shell: pwsh
+      run: .github\utility\SetPassedVersionNumber.ps1 -latest '${{ steps.latest_release.outputs.tag_name }}'
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Make Demo Executable
+      run: dotnet publish /p:DebugType=None /p:DebugSymbols=false /p:PublishReadyToRun=true /p:PublishSingleFile=true /p:PublishReadyToRunShowWarnings=true /p:PublishTrimmed=false /p:IncludeNativeLibrariesForSelfExtract=true DansWpfComponents\DansWpfComponents.Demo\DansWpfComponents.Demo.csproj -o . -c release
+      env:
+        pipelinePackageVersion: ${{ steps.make_version.outputs.pipelinePackageVersion }}
+        pipelineAssemblyVersion: ${{ steps.make_version.outputs.pipelineAssemblyVersion }}
+
+    - name: Upload Demo Executable
+      uses: actions/upload-artifact@v3.0.0
+      with:
+        name: Demo
+        path: DansWpfComponents.Demo.exe
+        if-no-files-found: error
+
+    - name: Publish Demo Executable
+      uses: svenstaro/upload-release-action@2.2.1
+      with:
+        repo_token: ${{ github.token }}
+        file: DansWpfComponents.Demo.exe
+        tag: ${{ steps.latest_release.outputs.tag_name }}
