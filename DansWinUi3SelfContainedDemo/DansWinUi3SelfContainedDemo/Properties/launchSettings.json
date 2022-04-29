@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DansWinUi3SelfContainedDemo (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "DansWinUi3SelfContainedDemo (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

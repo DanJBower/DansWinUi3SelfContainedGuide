@@ -17,6 +17,8 @@ The simple demo exe can be downloaded from the releases page. It can be run with
 
 ### Preparing Your Computer
 
+*Note: Eventually this will come to the built in versions for visual studio. I will update the guide around when that happens*
+
 1) Setup Visual Studio. Open Visual Studio Installer and select:
 
     * Main Page
@@ -44,5 +46,13 @@ The simple demo exe can be downloaded from the releases page. It can be run with
 4) Install this specific version of the [C++ redistributable](https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)
 
 ### Creating The Project
+
+1) Open Visual Studio and make a new project
+
+2) Select `Blank App, Packaged (WinUI 3 in Desktop)`
+
+3) If storing in git, run `dotnet new gitignore` in command prompt in the folder created.
+
+4)
 
 ### Making The exe
