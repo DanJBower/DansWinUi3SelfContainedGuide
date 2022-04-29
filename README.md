@@ -1,6 +1,6 @@
 # Dan's WinUI 3 Self-Contained .exe Guide
 
-## Important Note
+## Important Note - Can not currently share self-contained exe due to build issues
 
 This guide should work in the future. However, there is currently a blocking issue [msbuild#7452](https://github.com/dotnet/msbuild/issues/7452) that needs to be resolved before the `dotnet` cli commands can work.
 
@@ -8,9 +8,15 @@ Therefore, the project can be built into an exe, but it can't be shared as self 
 
 Nevermind, another blocking issue. Raised issue. [So close yet so far msbuild#7587](<https://github.com/dotnet/msbuild/issues/7587>)
 
-## Another shocking thing
+## Other shocking things
 
 There is currently no XAML Designer... [microsoft-ui-xaml#5917](https://github.com/microsoft/microsoft-ui-xaml/issues/5917)
+
+It currently only supports 2006 XAML instead of 2009... [microsoft-ui-xaml#7037](https://github.com/microsoft/microsoft-ui-xaml/issues/7037)
+
+MAUI does not have the 2006 XAML problem. However, self-contained MAUI application support is not likely to be till 1.1 / 1.2. Non-self-contained exe support also is not currently supported but should be(?) for .NET 6.3 release. [maui#3166](https://github.com/dotnet/maui/issues/3166)
+
+I also feel like there are a lot of missing WPF features [microsoft-ui-xaml#719](https://github.com/microsoft/microsoft-ui-xaml/issues/719), your choice if you need any of them or not.
 
 ## About
 
