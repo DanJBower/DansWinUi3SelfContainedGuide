@@ -35,6 +35,8 @@ The simple demo exe can be downloaded from the releases page. It can be run with
 
         * Windows 10 SDK (10.0.19041.0)
 
+*Note: A copy of the installers from the links can be found in `.\InstallersForReadme` if you want to get them quickly, otherwise feel free to download from the links*
+
 2) Download and install [Windows App SDK 1.1 Preview 2](https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/downloads)
 
 3) From the same website, download `C# Visual Studio 2022 extension` for the preview
