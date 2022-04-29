@@ -1,5 +1,11 @@
 # Dan's WinUI 3 Self-Contained .exe Guide
 
+## Important Note
+
+This guide should work in the future. However, there is currently a blocking issue [msbuild#7452](https://github.com/dotnet/msbuild/issues/7452) that needs to be resolved before the `dotnet` cli commands can work.
+
+Therefore, the project can be built into an exe, but it can't be shared as self contained
+
 ## About
 
 This repository contains:
